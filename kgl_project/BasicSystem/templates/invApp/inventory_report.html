@@ -1,0 +1,53 @@
+{% extends 'invApp/layout.html' %}
+
+{% block content %}
+<h2 class="text-center">Inventory Reporting Dashboard</h2>
+
+<div style="display: flex;padding: 30px">
+   <div>
+       <form method="get">
+          <input type="text" name="query" placeholder="Search by Product Name or ID" value="{{ request.GET.query }}">
+          <input type="date" name="from_date" value="{{ request.GET.from_date }}">
+          <input type="date" name="to_date" value="{{ request.GET.to_date }}">
+          <button type="submit">Search</button>
+       </form>
+   </div>
+</div>
+<br>
+<table style="width: 100%" border="1" class="table table-bordered table-striped">
+    <thead class="thead-dark">
+        <tr>
+            <th>Product ID</th>
+            <th>Product Name</th>
+            <th>Quantity Entry</th>
+            <th>Product Category</th>
+            <th>Supplier Name</th>
+            <th>Supply Price</th>
+            <th>Reason for Negative Entry</th>
+            <th>Price</th>
+            <th>Date Modified</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for update in stock_updates %}
+        <tr>
+            <td>{{ update.product.product_id }}</td>
+            <td>{{ update.product.name }}</td>
+            <td>{{ update.quantity }}</td>
+            <td>{{ update.product.category }}</td>
+            <td>{{ update.supplier|default:"-" }}</td>
+            <td>{{ update.supply_price }}</td>   {# Always show Supplier (or -) #}
+            <td>{{ update.reason|default:"-" }}</td> {# Always show Reason (or -) #}
+            <td>{{ update.price | default:"-" }}</td>
+            <td>{{ update.updated_at|date:"Y-m-d H:i" }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="7">No stock updates found for your search.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="{% url 'homeproduce' %}">Back to Products</a>
+{% endblock %}

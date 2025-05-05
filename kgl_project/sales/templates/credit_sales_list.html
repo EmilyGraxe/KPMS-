@@ -1,0 +1,49 @@
+{% extends 'dashboard.html' %}
+{% block content %}
+
+
+
+<h2>Credit Sales</h2>
+
+<table border="1"class="table table-bordered table-striped">
+    <thead>
+        <tr class="thead-dark">
+            <th>Sale ID</th>
+            <th>Customer</th>
+            <th>Sale Date</th>
+            <th>Due Date</th>
+            <th>Total Amount</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for sale in credit_sales %}
+        <tr>
+            <td>{{ sale.id }}</td>
+            <td>{{ sale.customer.name }}</td>
+            <td>{{ sale.created_at|date:"Y-m-d" }}</td>
+            <td>{{ sale.due_date }}</td>
+            <td>{{ sale.total_amount }}</td>
+            <td>
+                {% if sale.is_paid %}
+                    <span style="color: green;">Paid</span>
+                {% else %}
+                    <span style="color: red;">Unpaid</span>
+                {% endif %}
+            </td>
+            <td>
+                {% if not sale.is_paid %}
+                    <a href="{% url 'sales:markAspaid' sale.id %}">Mark as Paid</a>
+                {% else %}
+                    -
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="7">No credit sales found.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

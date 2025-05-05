@@ -1,0 +1,34 @@
+{% extends 'invApp/layout.html' %}
+{% block title %}Stock Update {% endblock %}
+{% block content %}
+<h2 class="text-center">Update stock for {{ product.name }}</h2>
+<form method="POST" class="jumbotron">
+    {% csrf_token %}
+
+       <p>{{form.quantity.label}}: {{form.quantity}}<br></p>
+       <p> {{form.price.label}}: {{form.price}}<br></p>
+       <p> {{form.supplier.label}}: {{form.supplier}}</p>
+       <p id="id_reason" style="display: none;"> {{form.reason.label}}: {{form.reason}}</p>
+       <p> {{form.supply_price.label}}: {{form.supply_price}}<br></p>
+    
+    <button type="submit" class="btn btn-success ">Save Stock</button>
+    <a href="{% url 'product_list' %}" class="btn btn-secondary">Cancel</a>
+</form>
+<script>
+    const quantityInput = document.getElementById('id_quantity');
+    const reasonInput = document.getElementById('id_reason');
+    function toggleReasonInput() {
+        const val = parseInt(quantityInput.value, 10);
+        if (!isNaN(val) && val < 0) {
+            reasonInput.style.display = 'block';
+        } else {
+            reasonInput.style.display = 'none';
+    //clear reason input when hiden
+            document.getElementById('id_reason').value = '';
+        }
+    }
+    quantityInput.addEventListener('input', toggleReasonInput);
+    toggleReasonInput(); //run on page load
+
+</script>
+{%endblock%}

@@ -1,0 +1,807 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        <meta charset="utf-8" />
+        <title>{% block title %}Dashboards{% endblock %}</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
+        <meta content="Coderthemes" name="author" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <style>html, body{height: 100%;}</style>
+        <!-- App favicon -->
+        <link rel="stylesheet" href="{% static 'assets/images/favicon.ico' %}">
+
+        <!-- plugin css -->
+        <link href="../assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" type="text/css" href="{% static 'assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.css' %}"/>
+
+        <!-- App css -->
+        <link href="../assets/css/bootstrap-modern.min.css" rel="stylesheet" type="text/css" id="bs-default-stylesheet" />
+        <link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap-modern.min.css' %}"id="bs-default-stylesheet" />
+        <link href="../assets/css/app-modern.min.css" rel="stylesheet" type="text/css" id="app-default-stylesheet"  />
+        <link rel="stylesheet" type="text/css" href="{% static 'assets/css/app-modern.min.css' %}" id="app-default-stylesheet" />
+
+        <link href="../assets/css/bootstrap-modern-dark.min.css" rel="stylesheet" type="text/css" id="bs-dark-stylesheet" disabled />
+        <link rel="stylesheet" type="text/css" href="{% static 'assets/css/bootstrap-modern-dark.min.css' %}" id="bs-dark-stylesheet" disabled />
+        <link href="../assets/css/app-modern-dark.min.css" rel="stylesheet" type="text/css" id="app-dark-stylesheet"  disabled />
+        <link rel="stylesheet" type="text/css" href="{% static 'assets/css/app-modern-dark.min.css' %}" id="app-dark-stylesheet"  disabled />
+
+        <!-- icons -->
+        <link href="../assets/css/icons.min.css" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" type="text/css" href="{% static 'assets/css/icons.min.css' %}"/>
+
+    </head>
+
+    <body data-layout-mode="horizontal" data-layout='{"mode": "light", "width": "boxed", "menuPosition": "fixed", "topbar": {"color": "dark"}, "showRightSidebarOnPageLoad": true}'>
+      {% block content %}
+        <!-- Begin page -->
+        <div id="wrapper">
+
+            <!-- Topbar Start -->
+            <div class="navbar-custom">
+                <div class="container-fluid">
+                    <ul class="list-unstyled topnav-menu float-right mb-0">
+
+    
+                        <li class="dropdown d-none d-lg-inline-block">
+                            <a class="nav-link dropdown-toggle arrow-none waves-effect waves-light" data-toggle="fullscreen" href="#">
+                                <i class="fe-maximize noti-icon"></i>
+                            </a>
+                        </li>
+    
+                       
+    
+                        <li class="dropdown d-none d-lg-inline-block topbar-dropdown">
+                            <a class="nav-link dropdown-toggle arrow-none waves-effect waves-light" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                <img src="{% static 'assets/images/flags/us.jpg' %}" alt="user-image" height="16">
+                                <!-- shows the KGL branch name and logo ,for director only it shows three options of logging to one,two or both to view sales reports-->
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right">
+    
+                                <!-- item-->
+                                <a href="javascript:void(0);" class="dropdown-item">
+                                    <img src="../assets/images/flags/germany.jpg" alt="user-image" class="mr-1" height="12"> <span class="align-middle">Uganda</span>
+                                </a>
+    
+                            
+                            </div>
+                        </li>
+            
+                        <li class="dropdown notification-list topbar-dropdown">
+                            <a class="nav-link dropdown-toggle waves-effect waves-light" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                <i class="fe-bell noti-icon"></i>
+                                <span class="badge badge-danger rounded-circle noti-icon-badge">NEW</span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right dropdown-lg">
+    
+                                <!-- item-->
+                                <div class="dropdown-item noti-title">
+                                    <h5 class="m-0">
+                                        <span class="float-right">
+                                            <a href="" class="text-dark">
+                                                <small>Clear All</small>
+                                            </a>
+                                        </span>Notification
+                                    </h5>
+                                    <!-- shows the manger of adding stock notifications and debtors of the business plus goods tried to sell yet they are out of stock -->
+                                </div>
+    
+                                <div class="noti-scroll" data-simplebar>
+    
+                                    <!-- item-->
+                                    <a href="javascript:void(0);" >
+                                        <div class="notify-icon">
+                                            {% if out_of_stock %}
+                                                 <h5>Stock Alert!</h5>
+                                                 <ul>
+                                                    {% for product in out_of_stock %}
+                                                    <li>{{ product.name }} ({{ product.id}}) is out of stock.</li>
+                                                    {% endfor %}
+                                                 </ul>
+                                              {% endif %}
+                                        </div>
+                                       
+                                    </a>
+
+    
+                                    <!-- item-->
+                                    <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                        <div>
+                                           
+                                            {% if overdue_sales %}
+                                               <div class="alert alert-warning">
+                                                 <h5>Overdue Credit Sales</h5>
+                                                 <ul>
+                                                    {% for sale in overdue_sales %}
+                                                      <li>Customer: {{ sale.customer.name }}</li>
+                                                    {% endfor %}
+                                                 </ul>
+                                               </div>
+                                            {% endif %}
+                                        </div>
+                                        
+                                    </a>
+    
+                                   
+    
+                                    <!-- item-->
+                                   
+                                </div>
+     
+                                <!-- All-->
+                                <a href="javascript:void(0);" class="dropdown-item text-center text-primary notify-item notify-all">
+                                    View all
+                                    <i class="fe-arrow-right"></i>
+                                    <!-- views all notifications -->
+                                </a>
+    
+                            </div>
+                        </li>
+    
+                        <li class="dropdown notification-list topbar-dropdown">
+                            <a class="nav-link dropdown-toggle nav-user mr-0 waves-effect waves-light" data-toggle="dropdown" href="#" role="button" aria-haspopup="false" aria-expanded="false">
+                                <Span style="font-size: x-large;">USER ID:</span>
+            
+                                <span style="font-size: x-large;" class="pro-user-name ml-1">
+                                    {% if user.is_authenticated %}
+                                        {{ user.user_id }} 
+                                    {% endif %}
+                                    <i class="mdi mdi-chevron-down"></i> 
+                                    <!-- user role is shown -->
+                                </span>
+                              
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right profile-dropdown ">
+                                <!-- item-->
+                                <div class="dropdown-header noti-title">
+                                    <h6 class="text-overflow m-0">Welcome !</h6>
+                                </div>
+    
+                                <!-- item-->
+                                <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                    <i class="fe-user"></i>
+                                    <span>My Account</span>
+                                </a>
+    
+                                <!-- item-->
+                                <!-- <a href="javascript:void(0);" class="dropdown-item notify-item">
+                                    <i class="fe-settings"></i>
+                                    <span>Settings</span>
+                                </a> -->
+    
+                                <!-- item-->
+                                <a href="{% url 'logout' %}" class="dropdown-item notify-item">
+                                    <i class="fe-lock"></i>
+                                    <span>Lock Screen</span>
+                                </a>
+    
+                                <div class="dropdown-divider"></div>
+    
+                                <!-- item-->
+                                <a href="{% url 'logout' %}" class="dropdown-item notify-item">
+                                    <i class="fe-log-out"></i>
+                                    <span>Logout</span>
+                                </a>.
+                                <!-- all these have to function perfectly -->
+    
+                            </div>
+                        </li>
+    
+                        <li class="dropdown notification-list">
+                            <a href="javascript:void(0);" class="nav-link right-bar-toggle waves-effect waves-light">
+                                <i class="fe-settings noti-icon"></i>
+                            </a>
+                        </li>
+    
+                    </ul>
+    
+                    <!-- LOGO -->
+                     <!-- this is where the company name goes -->
+                     <div style="text-align: center;">
+                       
+    
+                         <a href="#" class="logo logo-light text-left">
+                            
+                            <span >
+                                 <span class="logo-lg-text-light">KARIBU GROCERIES LTD</span> 
+                            </span>
+                        </a> 
+                    </div>
+                      
+                              
+                           
+                            <div class="dropdown-menu dropdown-megamenu">
+                                <div class="row">
+                                    <div class="col-sm-8">
+                            
+                                        <div class="row">
+                                           
+    
+                                            <div class="col-md-4">
+                                               
+                                                   
+                                            </div>
+    
+                                            <div class="col-md-4">
+                                               
+                                                  
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <div class="text-center mt-3">
+                                            <h3 class="text-dark">Special Discount Sale!</h3>
+                                            <h4>Save up to 70% off.</h4>
+                                            <button class="btn btn-primary btn-rounded mt-3">Download Now</button>
+                                        </div>
+                                    </div>
+                                </div>
+    
+                            </div>
+                        </li> 
+                    <!-- </ul> -->
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+            <!-- end Topbar -->
+
+            <div class="topnav">
+                <div class="container-fluid">
+                    <nav class="navbar navbar-light navbar-expand-lg topnav-menu">
+
+                        <div class="collapse navbar-collapse" id="topnav-menu-content">
+                            <ul class="navbar-nav">
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-dashboard" role="button"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fe-airplay mr-1"></i> Dashboards <div class="arrow-down"></div>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="topnav-dashboard">
+                                        <div class="dropdown">
+                                            <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-ecommerce"
+                                                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fe-shopping-cart mr-1"></i> Sales <div class="arrow-down"></div>
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="topnav-ecommerce">
+                                                <a href="{% url 'sales:home' %}" class="dropdown-item">Sales Dashboard</a>
+                                                <a href="{% url 'sales:pos' %}" class="dropdown-item">Make Sales</a>
+                                                <a href="{% url 'sales:credit_sales_list' %}" class="dropdown-item">View Credit Sales</a>
+                                                <a href="{% url 'sales:sales_report' %}" class="dropdown-item">Sales Report</a>
+                                                <a href="{% url 'sales:receipt_pdf' 1 %}" class="dropdown-item">Print Receipt</a>
+
+                                            </div>
+                                        </div>
+                                        <div class="dropdown">
+                                            <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-ecommerce"
+                                                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fe-shopping-cart mr-1"></i> Procurement and Inventory <div class="arrow-down"></div>
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="topnav-ecommerce">
+                                                <a href="{% url 'homeproduce' %}" class="dropdown-item">Produce Dashboard</a>
+                                                <a href="{% url 'product_create' %}" class="dropdown-item">Create Produce</a>
+                                                <a href="{% url 'product_list' %}" class="dropdown-item">View and Update Produce</a>
+
+                                            </div>
+                                        </div>
+                                        <div class="dropdown">
+                                            <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-ecommerce"
+                                                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fe-shopping-cart mr-1"></i> Reporting <div class="arrow-down"></div>
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="topnav-ecommerce">
+                                              
+                                                <a href="{% url 'inventory_report' %}" class="dropdown-item">Reporting</a>
+
+                                            </div>
+                                        </div>
+                                        
+                                       
+                                    </div>
+                                </li>
+
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-apps" role="button"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fe-grid mr-1"></i> Apps <div class="arrow-down"></div>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="topnav-apps">
+
+                                        <a href="apps-calendar.html" class="dropdown-item"><i class="fe-calendar mr-1"></i> Calendar</a>
+                                        <!-- <a href="apps-chat.html" class="dropdown-item"><i class="fe-message-square mr-1"></i> Chat</a> -->
+                                        
+                                        <div class="dropdown">
+                                            <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-email"
+                                                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fe-mail mr-1"></i> Email <div class="arrow-down"></div>
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="topnav-email">
+                                                <a href="email-inbox.html" class="dropdown-item">Inbox</a>
+                                                <a href="email-read.html" class="dropdown-item">Read Email</a>
+                                                <a href="email-compose.html" class="dropdown-item">Compose Email</a>
+                                                <a href="email-templates.html" class="dropdown-item">Email Templates</a>
+                                            </div>
+                                        </div>
+
+                                        <div class="dropdown">
+                                            <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-crm"
+                                                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fe-users mr-1"></i> CRM <div class="arrow-down"></div>
+                                                <!-- will store customer information and supplier information -->
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="topnav-crm">
+                                                <a href="crm-dashboard.html" class="dropdown-item">Suppliers</a>
+                                                <a href="crm-contacts.html" class="dropdown-item">Contacts</a>
+                                                <a href="crm-opportunities.html" class="dropdown-item">Opportunities</a>
+                                                <a href="crm-leads.html" class="dropdown-item">Leads</a>
+                                                <a href="crm-customers.html" class="dropdown-item">Customers</a>
+                                            </div>
+                                        </div>
+
+                                        <a href="apps-social-feed.html" class="dropdown-item"><i class="fe-rss mr-1"></i> Social Feed</a>
+                                        <a href="apps-companies.html" class="dropdown-item"><i class="fe-activity mr-1"></i>Branches</a>
+
+                                        <!-- <div class="dropdown">
+                                            <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-project"
+                                                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fe-briefcase mr-1"></i> Projects <div class="arrow-down"></div>
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="topnav-project">
+                                                <a href="project-list.html" class="dropdown-item">List</a>
+                                                <a href="project-detail.html" class="dropdown-item">Detail</a>
+                                                <a href="project-create.html" class="dropdown-item">Create Project</a>
+                                            </div>
+                                        </div> -->
+                                        <!-- <div class="dropdown">
+                                            <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-task"
+                                                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fe-clipboard mr-1"></i> Tasks <div class="arrow-down"></div>
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="topnav-task">
+                                                <a href="task-list.html" class="dropdown-item">List</a>
+                                                <a href="task-details.html" class="dropdown-item">Details</a>
+                                                <a href="task-kanban-board.html" class="dropdown-item">Kanban Board</a>
+                                            </div>
+                                        </div> -->
+                                        <div class="dropdown">
+                                            <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-contact"
+                                                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fe-book mr-1"></i> Employees <div class="arrow-down"></div>
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="topnav-contact">
+                                                <a href="contacts-list.html" class="dropdown-item">Employee lists</a>
+                                                <a href="contacts-profile.html" class="dropdown-item">Profile</a>
+                                                <!-- salary and information about employee -->
+                                            </div>
+                                        </div>
+                                        <!-- <div class="dropdown">  
+                                            <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-tickets"
+                                                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fe-aperture mr-1"></i> View Receipts <div class="arrow-down"></div>
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="topnav-tickets">
+                                                <a href="tickets-list.html" class="dropdown-item">List</a>
+                                                <a href="tickets-detail.html" class="dropdown-item">Detail</a>
+                                            </div>
+                                        </div>
+                                        <a href="apps-file-manager.html" class="dropdown-item"><i class="fe-folder-plus mr-1"></i> File Manager</a>
+                                    </div> -->
+                                </li>
+
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-ui" role="button"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fe-briefcase mr-1"></i> Categories <div class="arrow-down"></div>
+                                    </a>
+                                     
+
+                                    <div class="dropdown-menu mega-dropdown-menu dropdown-mega-menu-xl" aria-labelledby="topnav-ui">
+                                        <div class="row">
+                                            <div class="col-lg-4">
+                                                <div>
+                                                    <p>Categories</p>
+
+                                                    <a href="{% url 'category_list' %}" class="dropdown-item">View categories</a>
+                                                    
+                                                  
+                                                </div>
+                                            </div>
+                                            <!-- <div class="col-lg-4">
+                                                <div>
+                                                    <a href="ui-notifications.html" class="dropdown-item">Notifications</a>
+                                                    <a href="ui-spinners.html" class="dropdown-item">Spinners</a>
+                                                    <a href="ui-images.html" class="dropdown-item">Images</a>
+                                                    <a href="ui-carousel.html" class="dropdown-item">Carousel</a>
+                                                    <a href="ui-list-group.html" class="dropdown-item">List Group</a>
+                                                    <a href="ui-video.html" class="dropdown-item">Embed Video</a>
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-4">
+                                                <div>
+                                                    <a href="ui-dropdowns.html" class="dropdown-item">Dropdowns</a>
+                                                    <a href="ui-ribbons.html" class="dropdown-item">Ribbons</a>
+                                                    <a href="ui-tooltips-popovers.html" class="dropdown-item">Tooltips & Popovers</a>
+                                                    <a href="ui-general.html" class="dropdown-item">General UI</a>
+                                                    <a href="ui-typography.html" class="dropdown-item">Typography</a>
+                                                    <a href="ui-grid.html" class="dropdown-item">Grid</a>
+                                                </div>
+                                            </div> -->
+                                        </div>
+
+                                    </div>
+                                </li>
+
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-components" role="button"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fe-layers mr-1"></i> Components <div class="arrow-down"></div>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="topnav-components">
+                                        <div class="dropdown">
+                                            <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-form"
+                                                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fe-bookmark mr-1">Receipts</i>  <div class="arrow-down"></div>
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="topnav-form">
+                                                
+                                                <a href="forms-elements.html" class="dropdown-item">View Receipts</a>
+                                                <a href="forms-advanced.html" class="dropdown-item">Download Receipts</a>
+                                                <!-- cashier name should be included and the receipt should be saved in the database,including time of recept and date,before logging out time for cashier is.. -->
+                                        <div class="dropdown">
+                                            <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-extendedui"
+                                                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fe-pocket mr-1"></i> Reporting <div class="arrow-down"></div>
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="topnav-extendedui">
+                                                <a href="{% url 'inventory_report' %}" class="dropdown-item">View Inventory Report</a>
+                                                 <a href="{% url 'sales:sales_report' %}" class="dropdown-item">View sales Report</a>
+                                               <!-- <a href="extended-dragula.html" class="dropdown-item">Dragula</a>
+                                                <a href="extended-animation.html" class="dropdown-item">Animation</a>
+                                                <a href="extended-sweet-alert.html" class="dropdown-item">Sweet Alert</a>
+                                                <a href="extended-tour.html" class="dropdown-item">Tour Page</a>
+                                                <a href="extended-scrollspy.html" class="dropdown-item">Scrollspy</a>
+                                                <a href="extended-loading-buttons.html" class="dropdown-item">Loading Buttons</a> -->
+                                            </div>
+                                        </div>
+                                        <!-- <a href="widgets.html" class="dropdown-item"><i class="fe-gift mr-1"></i> Widgets</a> -->
+                                        <div class="dropdown">
+                                            <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-form"
+                                                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fe-bookmark mr-1">Dowloads</i>  <div class="arrow-down"></div>
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="topnav-form">
+                                                
+                                                <a href="forms-elements.html" class="dropdown-item">Produce pdf</a>
+                                                <a href="forms-advanced.html" class="dropdown-item">Sales pdf</a>
+                                                
+                                            </div>
+                                        </div>
+                                       
+                                            <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-map"
+                                                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                <i class="fe-map mr-1"></i> Maps <div class="arrow-down"></div>
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="topnav-map">
+                                                <a href="maps-google.html" class="dropdown-item">Google Maps</a>
+                                                <a href="maps-vector.html" class="dropdown-item">Vector Maps</a>
+                                                <a href="maps-mapael.html" class="dropdown-item">Mapael Maps</a>
+                                            </div>
+                                        </div> 
+                                    </div>
+                                </li>
+
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-pages" role="button"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fe-package mr-1"></i> Customers <div class="arrow-down"></div>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="topnav-pages">
+                                        <div class="dropdown">
+                                            <a class="dropdown-item dropdown-toggle arrow-none" href="#" id="topnav-auth"
+                                                role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                Credit Worthy Customers <div class="arrow-down"></div>
+                                            </a>
+                                            <div class="dropdown-menu" aria-labelledby="topnav-auth">
+                                                <a href="{% url 'trusted_customer' %}" class="dropdown-item">Register Trusted customer</a>
+                                                <a href="{% url 'trusted_customer_list' %}" class="dropdown-item">Trusted customers List</a>
+                                                
+                                            </div>
+                                        </div>
+
+                                       
+                                    </div>
+                                </li>
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle arrow-none" href="#" id="topnav-layout" role="button"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fe-sidebar mr-1"></i> Admin <div class="arrow-down"></div>
+                                    </a>
+                                    <div class="dropdown-menu" aria-labelledby="topnav-layout">
+                                        <a href="layouts-vertical.html" class="dropdown-item">Add user</a>
+                                        <a href="layouts-horizontal.html" class="dropdown-item">Security</a>
+                                        
+                                    </div>
+                                </li>
+                            </ul> <!-- end navbar-->
+                        </div> <!-- end .collapsed-->
+                    </nav>
+                </div> <!-- end container-fluid -->
+            </div> <!-- end topnav-->
+
+            <!-- ============================================================== -->
+            <!-- Start Page Content here -->
+            <!-- ============================================================== -->
+
+            <div class="content-page">
+                <div class="content">
+
+                    <!-- Start Content-->
+                    <div class="container-fluid">
+                        
+                        <!-- start page title -->
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="page-title-box">
+                                    <div class="page-title-right">
+                                        <ol class="breadcrumb m-0">
+                                            <li class="breadcrumb-item"><a href="javascript: void(0);">KGL</a></li>
+                                            <li class="breadcrumb-item"><a href="javascript: void(0);">Dashboard</a></li>
+                                            <li class="breadcrumb-item active">horizontal</li>
+                                            <!-- user page will be added up there -->
+                                        </ol>
+                                    </div>
+                                    <h4 class="page-title">Dashboards</h4>
+                                </div>
+                            </div>
+                        </div>     
+                        <!-- end page title --> 
+
+                        <div class="row">
+                            <div class="col-md-6 col-xl-3">
+                                <div class="card-box">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="avatar-sm bg-success rounded">
+                                                <i class="fe-aperture avatar-title font-22 text-white"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="text-right">
+                                                <h3 class="text-dark my-1"><span data-plugin="counterup">12,145</span>+</h3>
+                                                <p class="text-muted mb-1 text-truncate">stock</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <h6 class="text-uppercase"><a href="{% url 'homeproduce' %}">Procurement & Inventory</a> <span class="float-right">60%</span></h6>
+                                        <div ></div>
+                                        <div class="progress progress-sm m-0">
+                                            <div class="progress-bar bg-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%">
+                                                <span class="sr-only">60% Complete</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> <!-- end card-box-->
+                            </div> <!-- end col -->
+
+                            <div class="col-md-6 col-xl-3">
+                                <div class="card-box">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="avatar-sm bg-info rounded">
+                                                <i class="fe-shopping-cart avatar-title font-22 text-white"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="text-right">
+                                                <h3 class="text-dark my-1"><span data-plugin="counterup">1576</span>+</h3>
+                                                <p class="text-muted mb-1 text-truncate">Cashouts</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <h6 class="text-uppercase"><a href="{% url 'sales:home' %}">Sales</a> <span class="float-right">54%</span></h6>
+                                        <div class="progress progress-sm m-0">
+                                            <div class="progress-bar bg-info" role="progressbar" aria-valuenow="49" aria-valuemin="0" aria-valuemax="100" style="width: 49%">
+                                                <span class="sr-only">54% Complete</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> <!-- end card-box-->
+                            </div> <!-- end col -->
+
+                            <div class="col-md-6 col-xl-3">
+                                <div class="card-box">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="avatar-sm bg-warning rounded">
+                                                <i class="fe-bar-chart-2 avatar-title font-22 text-white"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="text-right">
+                                                <h3 class="text-dark my-1">$<span data-plugin="counterup">8947</span>+</h3>
+                                                <p class="text-muted mb-1 text-truncate">Analytics</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <h6 class="text-uppercase">Reporting <span class="float-right">18%</span></h6>
+                                        <div class="progress progress-sm m-0">
+                                            <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="18" aria-valuemin="0" aria-valuemax="100" style="width: 18%">
+                                                <span class="sr-only">18% Complete</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> <!-- end card-box-->
+                            </div> <!-- end col -->
+
+                            <div class="col-md-6 col-xl-3">
+                                <div class="card-box">
+                                    <div class="row">
+                                        <div class="col-6">
+                                            <div class="avatar-sm bg-danger rounded">
+                                                <i class="fe-cpu avatar-title font-22 text-white"></i>
+                                            </div>
+                                        </div>
+                                        <div class="col-6">
+                                            <div class="text-right">
+                                                <h3 class="text-dark my-1"><span data-plugin="counterup">300</span>+</h3>
+                                                <p class="text-muted mb-1 text-truncate">AvailableProducts</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-3">
+                                        <h6 class="text-uppercase">Produce <span class="float-right">74%</span></h6>
+                                        <div class="progress progress-sm m-0">
+                                            <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="74" aria-valuemin="0" aria-valuemax="100" style="width: 74%">
+                                                <span class="sr-only">74% Complete</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div> <!-- end card-box-->
+                            </div> <!-- end col -->
+                        </div>
+                        <!-- end row -->
+
+                       
+
+                     
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="card-widgets">
+                                            <a href="javascript: void(0);" data-toggle="reload"><i class="mdi mdi-refresh"></i></a>
+                                            <a data-toggle="collapse" href="#cardCollpase5" role="button" aria-expanded="false" aria-controls="cardCollpase5"><i class="mdi mdi-minus"></i></a>
+                                            <a href="javascript: void(0);" data-toggle="remove"><i class="mdi mdi-close"></i></a>
+                                        </div>
+                                        <h4 class="header-title mb-0">Top Selling Products</h4>
+
+                                        <div id="cardCollpase5" class="collapse pt-3 show">
+                                            <div class="table-responsive">
+                                                <table class="table table-hover table-centered mb-0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th class="font-weight-medium">Product Name</th>
+                                                            <th class="font-weight-medium">Price</th>
+                                                            <th class="font-weight-medium">Quantity</th>
+                                                            <th class="font-weight-medium">Amount</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>Beans</td>
+                                                            <td>$79.49</td>
+                                                            <td>82</td>
+                                                            <td>$6,518.18</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Maize</td>
+                                                            <td>$128.50</td>
+                                                            <td>37</td>
+                                                            <td>$4,754.50</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Gnuts</td>
+                                                            <td>$39.99</td>
+                                                            <td>64</td>
+                                                            <td>$2,559.36</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Cowpeas</td>
+                                                            <td>$20.00</td>
+                                                            <td>184</td>
+                                                            <td>$3,680.00</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Soybeans</td>
+                                                            <td>$28.49</td>
+                                                            <td>69</td>
+                                                            <td>$1,965.81</td>
+                                                        </tr>
+                                                        <!-- <tr>
+                                                            <td>ASOS Ridley High Waist</td>
+                                                            <td>$79.49</td>
+                                                            <td>82</td>
+                                                            <td>$6,518.18</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Half Sleeve Shirt</td>
+                                                            <td>$39.99</td>
+                                                            <td>64</td>
+                                                            <td>$2,559.36</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>Lightweight Jacket</td>
+                                                            <td>$20.00</td>
+                                                            <td>184</td>
+                                                            <td>$3,680.00</td>
+                                                        </tr> --
+                                                    </tbody>
+                                                </table>
+                                            </div> <!-- end table responsive--
+                                        </div> <!-- collapsed end --
+                                    </div> <!-- end card-body --
+                                </div> <!-- end card--
+                            </div> end col --
+                        </div> <!-- end row --
+                        <!-- end row --
+                        
+                    </div> <!-- container --
+
+                </div> <!-- content -->
+
+                <!-- Footer Start -->
+                <footer class="footer">
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-md-6">
+                                 <script>document.write(new Date().getFullYear())</script> &copy; KGL all rights reserved
+                            </div>
+                            
+                        </div>
+                    </div>
+                </footer> 
+                <!-- end Footer-->
+
+            </div>
+
+            <!-- ============================================================== -->
+            <!-- End Page content -->
+            <!-- ============================================================== -->
+
+
+        </div>
+        <!-- END wrapper -->
+
+       
+ 
+
+        <!-- Right bar overlay-->
+       
+
+        <!-- Vendor js -->
+        <script src="../assets/js/vendor.min.js"></script>
+        <script src="{% static 'assets/js/vendor.min.js' %}"></script>
+
+        <!-- Plugins js-->
+        <script src="../assets/libs/jquery-sparkline/jquery.sparkline.min.js"></script>
+        <script src="{% static 'assets/libs/jquery-sparkline/jquery.sparkline.min.js' %}"></script>
+        <script src="../assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.min.js"></script>
+        <script src="{% static 'assets/libs/admin-resources/jquery.vectormap/jquery-jvectormap-1.2.2.min.js' %}"></script>
+        <script src="../assets/libs/admin-resources/jquery.vectormap/maps/jquery-jvectormap-world-mill-en.js"></script>
+        <script src="{% static 'assets/libs/admin-resources/jquery.vectormap/maps/jquery-jvectormap-world-mill-en.js' %}"></script>
+
+        <!-- Dashboard 2 init -->
+        <script src="../assets/js/pages/dashboard-2.init.js"></script>
+        <script src="{% static 'assets/js/pages/dashboard-2.init.js' %}"></script>
+
+        <!-- App js -->
+
+        <script src="../assets/js/app.min.js"></script>
+        <script src="{% static 'assets/js/app.min.js' %}"></script>
+        
+
+     {% endblock %}   
+    </body>
+</html>

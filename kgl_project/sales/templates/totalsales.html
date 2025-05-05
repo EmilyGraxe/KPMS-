@@ -1,0 +1,26 @@
+{% extends 'dashboard.html' %}
+{% block title %}Branch Sales Summary{% endblock %}
+{% block content %}
+
+
+<h2>Branch Sales Summary</h2>
+<form method="get">
+    From: <input type="date" name="from" value="{{ from_date }}">
+    To: <input type="date" name="to" value="{{ to_date }}">
+    <button type="submit">Generate</button>
+</form>
+
+<table border="1">
+    <tr>
+        <th>Branch</th>
+        <th>Total Sales</th>
+    </tr>
+    {% for row in summary %}
+    <tr>
+        <td>{{ row.branch__name }}</td>
+        <td>UGX {{ row.total_sales }}</td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}

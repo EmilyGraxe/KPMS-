@@ -1,0 +1,58 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Receipt {{ sale.id }}</title>
+  <style>
+    body { font-family: Arial, sans-serif; font-size: 13px; }
+    table { width: 50%; border-collapse: collapse; margin-top: 20px; }
+    th, td {  padding: 8px; text-align: left; }
+    th { background-color: #f2f2f2; }
+    h2, h3, p { margin: 4px 0; }
+  </style>
+</head>
+<body>
+
+<h2>Sale Receipt</h2>
+<p><strong>Receipt No:</strong> {{ sale.id }}</p>
+<!-- <p><strong>Cashier:</strong> {{ sale.user.user_id }}</p> -->
+<p><strong>Date:</strong> {{ sale.date }}</p>
+<p><strong>Payment:</strong> {{ sale.get_payment_method_display }}</p>
+
+{% if is_credit %}
+<p><strong>Customer:</strong> {{ sale.customer.name }}</p>
+<p><strong>NIN:</strong> {{ sale.customer.nin }}</p>
+<p><strong>Due Date:</strong> {{ sale.due_date }}</p>
+{%endif%}
+<table>
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th>Qty</th>
+      <th>Unit Price</th>
+      <th>Subtotal</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in items %}
+     <tr>
+        <td>{{ item.product.name }}</td>
+        <td>{{ item.quantity }}</td>
+        <td>UGX{{ item.price }}</td>
+        <td>UGX{{ item.subtotal }}</td>
+     </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h3>Total: UGX{{ sale.grand_total }}</h3>
+<h3>Amout Tendered: UGX{{ sale.amount_paid }}</h3>
+<h3>Change: UGX{{ sale.change }}</h3>
+<br>
+<hr>
+<a href="{% url 'sales:receipt_pdf' sale.id %}"target="_blank"><button>Print Receipt</button></a>
+<p>Thank you for shopping with us!</p>
+
+</body>
+</html>

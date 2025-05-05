@@ -1,0 +1,119 @@
+{%load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>On-Screen Keyboard Login</title>
+  <link rel="stylesheet" href="{% static 'css/login.css' %}">
+  <style>
+    body {
+      font-family: Arial;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      min-height: 100vh;
+      background-color: #f4f4f4;
+    }
+
+    .keyboard-container {
+      display: grid;
+      grid-template-columns: repeat(10, 40px);
+      gap: 8px;
+      margin-top: 20px;
+    }
+
+    .keyboard-container button {
+      padding: 10px;
+      font-size: 18px;
+    }
+
+    .input-display {
+      font-size: 22px;
+      letter-spacing: 2px;
+      background: rgb(12, 12, 12);
+      border: 5px solid #ccc;
+      color: white;
+      padding: 10px;
+      width: 400px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .btn {
+      background-color: rgb(12, 12, 12);
+      border: none;
+      color: white;
+      padding: 15px 32px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+      margin: 4px 2px;
+      cursor: pointer;
+    }
+    .btn:hover {
+      background-color: #555;
+      color: white;
+    }
+   
+ </style>
+  
+</head>
+<body>
+ <div class="container">
+  <div class="form-box">
+    <div class="right-box">
+        <h2 style="text-align: center;">Login to KPMS System</h2>
+        <div id="current-time" style="text-align: center; margin-bottom: 15px; font-weight: bold; font-size: 30px;"></div>
+
+        {% if messages %}
+        <ul class="messages">
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+        {% endif %}
+      
+       <form method="POST" >
+          {% csrf_token %}
+          <input type="password" name="password"  id="user_input" class="input-display" placeholder="User_Password" readonly onfocus="this.removeAttribute('readonly');" required><br>
+
+          <div class="keyboard-container" id="keyboard"></div>
+        <br>
+          <button class="btn" type="submit">LOGIN</button>
+       </form>
+    </div> </div>
+   <!-- <div class="container"> -->
+    <div class="left-box">
+      <div class="slideshow">
+          <img class="slide" src="{% static 'images/beans1.jpeg' %}" data-name="beans" alt="maize" style="width:100%">
+          <img class="slide" src="{% static 'images/beans2.jpeg' %}" data-name="beans" alt="beans" style="width:100%">
+          <img class="slide" src="{% static 'images/beans3.jpeg' %}" data-name="beans" alt="beans" style="width:100%">
+
+          <img class="slide" src="{% static 'images/cowpeas1.jpeg' %}" data-name="cowpeas" alt="cowpeas" style="width:100%">
+          <img class="slide" src="{% static 'images/cowpeas2.jpeg' %}" data-name="cowpeas" alt="cowpeas" style="width:100%">
+          <img class="slide" src="{% static 'images/cowpeas3.jpeg' %}" data-name="cowpeas" alt="cowpeas" style="width:100%">
+
+          <img class="slide" src="{% static 'images/maize1.jpeg' %}" data-name="maize" alt="maize" style="width:100%">
+          <img class="slide" src="{% static 'images/maize2.jpeg' %}" data-name="maize" alt="maize" style="width:100%">
+          <img class="slide" src="{% static 'images/maize3.jpeg' %}" data-name="maize" alt="maize" style="width:100%">
+
+          <img class="slide" src="{% static 'images/gnuts1.jpeg' %}"data-name="gnuts" alt="gnuts" style="width:100%">
+          <img class="slide" src="{% static 'images/gnuts2.jpeg' %}" data-name="gnuts" alt="gnuts" style="width:100%">
+          <img class="slide" src="{% static 'images/gnuts3.jpeg' %}" data-name="gnuts" alt="gnuts" style="width:100%">
+
+          <img class="slide" src="{% static 'images/soybean1.jpeg' %}" data-name="soybeans" alt="soybeans" style="width:100%">
+          <img class="slide" src="{% static 'images/soybean2.jpeg' %}" data-name="soybeans" alt="soybeans" style="width:100%">
+          <img class="slide" src="{% static 'images/soybean3.jpeg' %}" data-name="soybeans" alt="soybeans" style="width:100%">
+          <div id="produce-name" class="produce-name">Beans</div>
+      </div>
+    </div>
+
+  <!-- </div> -->
+ </div>
+<div class="footer">
+      <footer ><p>&copy; 2025 Karibu Growers Limited. All rights reserved.</p></footer> 
+  </div>
+
+ <script src="{% static 'js/registration.js' %}"></script>
+</body>

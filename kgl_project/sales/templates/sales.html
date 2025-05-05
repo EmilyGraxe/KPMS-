@@ -1,0 +1,172 @@
+
+{% extends 'dashboard.html' %}
+{% load static %}
+{% block title %}Create Sale{% endblock %}
+{% block content %}
+
+<h2>Create Sale</h2>
+
+<!-- Search Form -->
+<form method="POST">
+  {% csrf_token %}
+  {{ search_form.as_p }}
+  <button type="submit" name="search">Search Product</button>
+</form>
+
+<br>
+
+{% if product %}
+  <h3>Found: {{ product.name }} - UGX{{ product.price }}</h3>
+  <form method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="action" value="add_to_cart">
+    <input type="hidden" name="product_id" value="{{ product.product_id }}">
+    Quantity: <input type="number" name="quantity" value="1" min="1">
+    <button type="submit">Add to Cart</button>
+  </form>
+{% endif %}
+
+<hr>
+
+<h3>Cart</h3>
+{% if cart %}
+  <table>
+    <tr>
+      <th>Product</th><th>Qty</th><th>Price</th><th>Subtotal</th>
+    </tr>
+    {% for item in cart %}
+    <tr>
+      <td>{{ item.name }}</td>
+      <td>{{ item.quantity }}</td>
+      <td>UGX{{ item.price }}</td>
+      <td>UGX{{ item.subtotal }}</td>
+      <td>
+        <form method="POST" style="display: inline;">
+          {% csrf_token %}
+          <input type="hidden" name="action" value="remove_from_cart">
+          <input type="hidden" name="product_id" value="{{ item.product_id }}">
+          <button type="submit">Remove</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  <h4>Total: UGX{{ grand_total }}</h4>
+{% else %}
+  <p>No items in cart.</p>
+{% endif %}
+
+<br>
+
+<!-- Checkout Form -->
+<!-- <form method="POST">
+  {% csrf_token %}
+  {{ checkout_form.as_p }}
+  <button type="submit" name="checkout">Checkout</button>
+</form>
+
+{% if messages %}
+  {% for message in messages %}
+    <p>{{ message }}</p>
+  {% endfor %}
+{% endif %} -->
+
+<script>
+  function toggleNINField() {
+      const method = document.querySelector('[name="payment_method"]').value;
+      const ninField = document.getElementById("nin-field");
+      if (method === "credit") {
+          ninField.style.display = "block";
+      } else {
+          ninField.style.display = "none";
+      }
+  }
+  document.addEventListener("DOMContentLoaded", toggleNINField);
+  </script>
+  
+  <form method="POST">
+    {% csrf_token %}
+    {{ checkout_form.amount_paid.label_tag }} {{ checkout_form.amount_paid }}
+    {{ checkout_form.payment_method.label_tag }} {{ checkout_form.payment_method }}<br>
+  
+    <div id="nin-field" style="display:none;">
+      {{ checkout_form.nin.label_tag }} {{ checkout_form.nin }}
+    </div>
+  
+    <button type="submit" name="checkout">Checkout</button>
+  </form>
+  
+  <script>
+    document.querySelector('[name="payment_method"]').addEventListener('change', toggleNINField);
+  </script>
+
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+
+
+<h2>Create Sale</h2>
+
+<form method="POST">
+  {% csrf_token %}
+  {{ search_form.as_p }}
+  <button type="submit" name="search">Search Product</button>
+</form>
+
+<br><br>
+<div>
+ {% if product %}
+   <h3>Found: {{ product.name }} - UGX{{ product.price }}</h3>
+  <form method="POST">
+    {% csrf_token %}
+      <input type="hidden" name="product_id" value="{{ product.product_id }}">
+      Quantity: <input type="number" name="quantity" value="1" min="1">
+      <button type="submit" name="action"value="add_to_cart">Add to Cart</button>
+   </form>
+ {% endif %}
+
+ {% if cart %}
+    <h3>Cart:</h3>
+    <table>
+       <tr><th>Product</th><th>Qty</th><th>Price</th><th>Subtotal</th></tr>
+       {% for item in cart %}
+          <tr>
+           <td>{{ item.name }}</td>
+           <td>{{ item.quantity }}</td>
+           <td>UGX{{ item.price }}</td>
+            <td>UGX{{ item.subtotal }}</td>
+         </tr>
+      {% endfor %}
+  </table>
+  <h4>Total: UGX{{ Grand_total }}</h4>
+{% else %}
+  <p>No items in cart.</p>
+  <p>Cart length: {{ cart|length }}</p>
+{% endif %}
+</div>
+
+<form method="POST">
+  {% csrf_token %}
+  {{ checkout_form.as_p }}
+  <button type="submit" name="checkout">Checkout</button>
+</form>
+
+{% if checkout_form.errors %}
+  <p>{{ checkout_form.errors }}</p>
+{% endif %}
+
+ -->

@@ -1,0 +1,12 @@
+{%extends 'dashboard.html'%}
+{% block title %}Home {% endblock %}
+{% block content %}
+    <div class="jumbotron text-center">
+        <h1 class="display-4">Welcome to the Inventory Management System</h1>
+        <p class="lead">Manage your products efficiently</p>
+        <hr class="my-4">
+        <p>Use the navigation bar to add or view products.</p>
+        <a class="btn btn-primary btn-lg" href="{% url 'sales:pos' %}" role="button">pos</a>
+        <a href="{% url 'sales:sales_report' %}">report</a>
+    </div>
+{% endblock %}
